@@ -6,6 +6,8 @@ abstract class LoginState extends Equatable {
   final String? error;
   final bool isLoading;
 
+  bool get hasError => error != null;
+
   @override
   List<Object?> get props => [error, isLoading];
 }
@@ -18,6 +20,10 @@ class SmsRequestedState extends LoginState {
   const SmsRequestedState(this.phone, {String? error}) : super(error: error);
 
   final String phone;
+}
+
+class LoadingState extends LoginState {
+  const LoadingState({String? error}) : super(error: error, isLoading: true);
 }
 
 class LoginSuccessState extends LoginState {

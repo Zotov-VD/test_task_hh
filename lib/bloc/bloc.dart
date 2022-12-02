@@ -9,10 +9,31 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   final LoginRepository repository;
 
+  String _phone = "";
+
   @override
   Stream<LoginState> mapEventToState(
     LoginEvent event,
   ) async* {
-    //TODO: describe logic
+    if (event is PhoneEnteredEvent) {
+      yield const LoadingState();
+      _phone = event.phone;
+      try {
+        await repository.requestSms(_phone);
+        yield SmsRequestedState(_phone);
+      } catch (_) {
+        yield const PhoneInputState(error: "Failed SMS request");
+      }
+    } else if (event is CheckEnteredCode) {
+      yield const LoadingState();
+      try {
+        await repository.checkCode(_phone, event.code);
+        yield const LoginSuccessState();
+      } catch (_) {
+        yield SmsRequestedState(_phone, error: "Failed check code");
+      }
+    } else if (event is ReenterPhoneEvent) {
+      yield const PhoneInputState();
+    }
   }
 }
