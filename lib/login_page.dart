@@ -53,8 +53,6 @@ class _LoginFormState extends State<LoginForm> {
     super.dispose();
   }
 
-  //TODO show errors in any appropriate way (with dialog or as a red color text under the input field or any other way)
-
   void onPhoneSubmitted() {
     bloc.add(PhoneEnteredEvent(phoneController.text));
   }
@@ -82,8 +80,6 @@ class _LoginFormState extends State<LoginForm> {
         AnimatedSwitcher(
           duration: const Duration(milliseconds: 300),
           child: BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
-            //TODO show progress when state.isLoading is true
-
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
